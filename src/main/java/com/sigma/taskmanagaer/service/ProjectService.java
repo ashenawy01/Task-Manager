@@ -78,7 +78,6 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-
     private ProjectResponse mapToProjectResponseWithLinks(Project project) {
 
         ProjectResponse projectResponse =
