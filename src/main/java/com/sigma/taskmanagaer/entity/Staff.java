@@ -13,6 +13,7 @@ import java.util.TreeSet;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

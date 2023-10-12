@@ -1,7 +1,10 @@
 package com.sigma.taskmanagaer.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -11,6 +14,9 @@ import java.util.TreeSet;
 @Entity
 @Table(name = "project")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
