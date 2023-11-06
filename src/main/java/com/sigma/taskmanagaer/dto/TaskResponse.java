@@ -14,11 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 public class TaskResponse extends RepresentationModel<TaskResponse> {
 
-    private int id;
+    private long id;
     private String title;
     private String description;
+    private LocalDateTime startDate;
     private LocalDateTime deadline;
     private Status status;
+    private long employeeId;
     private String employeeName;
     private String employeeImg;
 }

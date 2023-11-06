@@ -16,4 +16,8 @@ public class ProjectResponse extends RepresentationModel<ProjectResponse> {
     private String title;
     private String description;
     private LocalDateTime deadline;
+    private int progress;
+    private long managerID;
+    private String managerName;
+    private String managerImg;
 }

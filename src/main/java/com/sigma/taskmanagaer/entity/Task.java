@@ -45,7 +45,8 @@ public class Task {
     @Column(name = "submit_file")
     private String submitFile;
 
-    @ManyToMany(mappedBy = "tasks", fetch = FetchType.LAZY)
-    private Set<Staff> employees;
+    @ManyToOne
+    @JoinColumn(name = "emp_id")
+    private Staff employee;
 
 }

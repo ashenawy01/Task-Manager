@@ -1,14 +1,20 @@
 package com.sigma.taskmanagaer.dto;
 
-import com.sigma.taskmanagaer.entity.Role;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.font.MultipleMaster;
-
-public class StaffDTO {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class StaffRequest {
 
     @NotBlank(message = "First Name is required")
     @Pattern(regexp = "^[A-Za-z]+$", message = "Please enter a valid First Name")
@@ -27,8 +33,8 @@ public class StaffDTO {
     private String password;
 
     @NotBlank(message = "Phone No is required")
-    @Pattern(regexp = "^[1-9][0-9]{9}$", message = "Invalid Phone No! Please enter 10 digits starting with 1 (e.g. '1234567890')")
+    @Pattern(regexp = "^01[0-9]{9}$", message = "Invalid Phone No! Please enter 11 digits starting with 01 (e.g. '01234567890')")
     private String phoneNo;
 
-    private MultipleMaster img;
+    private MultipartFile img;
 }

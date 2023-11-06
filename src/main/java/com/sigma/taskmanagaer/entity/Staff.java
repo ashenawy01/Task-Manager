@@ -42,17 +42,10 @@ public class Staff {
     @Column(name = "img_src")
     private String imgSrc;
 
-
     @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Project> projects;
 
-
-    @ManyToMany
-    @JoinTable(
-            name = "assign_task",
-            joinColumns = @JoinColumn(name = "staff_id"),
-            inverseJoinColumns  = @JoinColumn(name = "task_id")
-    )
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
 

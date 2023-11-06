@@ -1,10 +1,10 @@
 package com.sigma.taskmanagaer.dto;
 
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,17 +16,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-public class ProjectDTO {
+public class TaskRequest {
 
-    @NotBlank(message = "Title is required")
+    @NotBlank(message = "Project Title is required")
     private String title;
+
+    private String description;
 
     @NotNull(message = "Date is required")
     private LocalDateTime deadline;
 
-    @NotBlank(message = "Manager ID is required")
-    @Pattern(regexp = "^[1-9]\\d*$", message = "Please Enter a valid ID Manager (positive integer)")
-    private int managerID;
+    @NotNull(message = "Project ID is missing")
+    @Positive(message = "Please Enter a valid Project ID (positive integer)")
+    private Long projectId;
 
-    private String description;
+    @NotNull(message = "Employee ID is required")
+    @Positive(message = "Please Enter a valid Employee ID (positive integer)")
+    private Long employeeId;
+
 }
