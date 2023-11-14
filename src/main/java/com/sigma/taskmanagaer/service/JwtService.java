@@ -22,12 +22,14 @@ import java.util.List;
 public class JwtService {
 
     private final JwtProperties properties;
-    public String issueToken(long id, String email, List<String> roles) {
+    public String issueToken(long id, String email,String name, String image, List<String> roles) {
 
         return JWT.create()
                 .withExpiresAt(Instant.now().plus(Duration.of(properties.getExpireTime(), ChronoUnit.DAYS)))
                 .withSubject(String.valueOf(id))
                 .withClaim(properties.getClaimEmail(), email)
+                .withClaim("name", name)
+                .withClaim("image", image)
                 .withClaim(properties.getClaimRole(), roles)
                 .sign(Algorithm.HMAC256(properties.getSecurityKey()));
     }

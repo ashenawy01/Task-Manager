@@ -41,23 +41,11 @@ public class FileService {
         String folderName = "images/";
         String key = folderName + fileName;
 
-        if (currentSizeInBytes <= targetSizeInBytes) {
-            // Image is already smaller than or equal to the target size, no need to compress
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(currentSizeInBytes);
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(currentSizeInBytes);
 
-            amazonS3.putObject(bucketName, key, multipartFile.getInputStream(), metadata);
-        } else {
-            // Compress the image before uploading
-            byte[] compressedImageBytes = compressImage(multipartFile);
+        amazonS3.putObject(bucketName, key, multipartFile.getInputStream(), metadata);
 
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(compressedImageBytes.length);
-
-            InputStream inputStream = new ByteArrayInputStream(compressedImageBytes);
-
-            amazonS3.putObject(bucketName, key, inputStream, metadata);
-        }
         return fileName;
     }
 
@@ -78,40 +66,70 @@ public class FileService {
         return "user" + phoneNo + ext ;
     }
 
-    // Compress Image to approach 100 KB
-    private byte[] compressImage(MultipartFile multipartFile) throws IOException {
-        BufferedImage image = ImageIO.read(multipartFile.getInputStream());
-
-        // Target size in bytes (100 KB in this case)
-        long targetSizeInBytes = 100 * 1024;
-
-        // Start with a high compression quality
-        double compressionQuality = 1.0;
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        boolean success = false;
-
-        // Keep reducing the compression quality until the image size is smaller than the target
-        while (!success && compressionQuality >= 0.05) {
-            baos.reset();
-
-            // Compress the image with the current compression quality
-            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-            ImageWriteParam param = writer.getDefaultWriteParam();
-            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            param.setCompressionQuality((float) compressionQuality);
-
-            ImageOutputStream ios = ImageIO.createImageOutputStream(baos);
-            writer.setOutput(ios);
-            writer.write(null, new IIOImage(image, null, null), param);
-
-            // Check if the compressed image size is within the target range
-            success = baos.size() <= targetSizeInBytes;
-
-            compressionQuality -= 0.05;
-        }
-
-        return baos.toByteArray();
-    }
+//    // Compress Image to approach 100 KB
+//    private byte[] compressImage(MultipartFile multipartFile) throws IOException {
+//        BufferedImage image = ImageIO.read(multipartFile.getInputStream());
+//
+//        // Target size in bytes (100 KB in this case)
+//        long targetSizeInBytes = 100 * 1024;
+//
+//        // Start with a high compression quality
+//        double compressionQuality = 1.0;
+//
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        boolean success = false;
+//
+//        // Keep reducing the compression quality until the image size is smaller than the target
+//        while (!success && compressionQuality >= 0.05) {
+//            baos.reset();
+//
+//            // Compress the image with the current compression quality
+//            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+//            ImageWriteParam param = writer.getDefaultWriteParam();
+//            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+//            param.setCompressionQuality((float) compressionQuality);
+//
+//            ImageOutputStream ios = ImageIO.createImageOutputStream(baos);
+//            writer.setOutput(ios);
+//            writer.write(null, new IIOImage(image, null, null), param);
+//
+//            // Check if the compressed image size is within the target range
+//            success = baos.size() <= targetSizeInBytes;
+//
+//            compressionQuality -= 0.05;
+//        }
+//
+//        return baos.toByteArray();
+//    }
+//
+//
+//    public String saveImg(MultipartFile multipartFile, String phoneNo) throws IOException {
+//
+//        long currentSizeInBytes = multipartFile.getSize();
+//        long targetSizeInBytes = 100 * 1024; // 100 KB target size
+//
+//        String fileName = nameImg(multipartFile.getOriginalFilename(), phoneNo);
+//        String folderName = "images/";
+//        String key = folderName + fileName;
+//
+//        if (currentSizeInBytes <= targetSizeInBytes) {
+//            // Image is already smaller than or equal to the target size, no need to compress
+//            ObjectMetadata metadata = new ObjectMetadata();
+//            metadata.setContentLength(currentSizeInBytes);
+//
+//            amazonS3.putObject(bucketName, key, multipartFile.getInputStream(), metadata);
+//        } else {
+//            // Compress the image before uploading
+//            byte[] compressedImageBytes = compressImage(multipartFile);
+//
+//            ObjectMetadata metadata = new ObjectMetadata();
+//            metadata.setContentLength(compressedImageBytes.length);
+//
+//            InputStream inputStream = new ByteArrayInputStream(compressedImageBytes);
+//
+//            amazonS3.putObject(bucketName, key, inputStream, metadata);
+//        }
+//        return fileName;
+//    }
 
 }

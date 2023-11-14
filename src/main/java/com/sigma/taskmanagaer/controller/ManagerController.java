@@ -3,6 +3,7 @@ package com.sigma.taskmanagaer.controller;
 import com.sigma.taskmanagaer.dto.ProjectResponse;
 import com.sigma.taskmanagaer.dto.StaffRequest;
 import com.sigma.taskmanagaer.dto.StaffResponse;
+import com.sigma.taskmanagaer.dto.StatisticDTO;
 import com.sigma.taskmanagaer.entity.Role;
 import com.sigma.taskmanagaer.service.ProjectService;
 import com.sigma.taskmanagaer.service.StaffService;
@@ -88,6 +89,11 @@ public class ManagerController {
     public ResponseEntity<String> deleteManager(@PathVariable long id) {
         managerService.deleteById(id);
         return ResponseEntity.ok("Project Manager has been deleted successfully");
+    }
+
+    @GetMapping("/{id}/statistics")
+    public ResponseEntity<StatisticDTO> getStatistics(@PathVariable long id) {
+        return ResponseEntity.ok(projectService.getProjectsStatistics(id));
     }
 
 

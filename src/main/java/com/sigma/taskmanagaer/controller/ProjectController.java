@@ -65,6 +65,10 @@ public class ProjectController {
     public ResponseEntity<?> UpdateProject(@PathVariable long id,
                                            @Valid @RequestBody ProjectRequest projectRequest,
                                            BindingResult bindingResult) {
+
+        System.out.println("in update");
+
+
         if (bindingResult.hasErrors()) {
 
             List<FieldError> errors = bindingResult.getFieldErrors();

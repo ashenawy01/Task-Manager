@@ -42,19 +42,14 @@ public class Staff {
     @Column(name = "img_src")
     private String imgSrc;
 
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Project> projects;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
-
-    public void setProjects(TreeSet<Project> projects) {
-        this.projects = projects;
-    }
-
-    public void setTasks(TreeSet<Task> tasks) {
-        this.tasks = tasks;
-    }
 
 }

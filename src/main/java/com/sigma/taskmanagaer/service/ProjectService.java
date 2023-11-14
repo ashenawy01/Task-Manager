@@ -138,6 +138,41 @@ public class ProjectService {
     }
 
 
+    public StatisticDTO getProjectsStatistics(long managerId) {
+        Map<String, Integer> dataMap = new HashMap<>();
+        int totalProjects = 0, inProgressProjects = 0, doneProjects = 0;
+
+        String jpql = "SELECT " +
+                "(SELECT COUNT(p) FROM Project p WHERE p.manager.id = :managerId) AS total, " +
+                "(SELECT COUNT(DISTINCT p) FROM Project p " +
+                "WHERE (SELECT COUNT(t) FROM Task t " +
+                "WHERE t.status != :doneStatus AND t.project = p) > 0 AND p.manager.id = :managerId) AS inProgress " +
+                "FROM Project p " +
+                "WHERE p.manager.id = :managerId";
+
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("doneStatus", Status.Done);
+        query.setParameter("managerId", managerId);
+
+        List<Object[]> results = query.getResultList();
+
+        if (!results.isEmpty()) {
+            Object[] result = results.get(0);
+
+            totalProjects = ((Number) result[0]).intValue();
+            inProgressProjects =  ((Number) result[1]).intValue();
+            doneProjects = totalProjects - inProgressProjects;
+        }
+
+        dataMap.put("total", totalProjects);
+        dataMap.put("in_progress", inProgressProjects);
+        dataMap.put("done", doneProjects);
+
+        return StatisticDTO.builder()
+                .title("projects")
+                .data(dataMap)
+                .build();
+    }
 
 
     private ProjectResponse mapToProjectResponseWithLinks(Project project) {
